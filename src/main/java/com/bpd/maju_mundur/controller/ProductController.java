@@ -6,6 +6,7 @@ import com.bpd.maju_mundur.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('MERCHANT')")
     public ResponseEntity<CommonResponse<Product>> create(@RequestBody Product product) {
         Product createdProduct = productService.create(product);
         CommonResponse<Product> response = CommonResponse.<Product>builder()
@@ -27,6 +29,7 @@ public class ProductController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('MERCHANT')")
     public ResponseEntity<CommonResponse<Product>> update(@RequestBody Product product) {
         Product updatedProduct = productService.update(product);
         CommonResponse<Product> response = CommonResponse.<Product>builder()
@@ -37,6 +40,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MERCHANT')")
     public ResponseEntity<CommonResponse<String>> delete(@PathVariable String id) {
         productService.delete(id);
         CommonResponse<String> response = CommonResponse.<String>builder()
@@ -46,7 +50,7 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping@PreAuthorize("hasAnyRole('CUSTOMER')")
     public ResponseEntity<CommonResponse<List<Product>>> getAll() {
         List<Product> products = productService.getAll();
         CommonResponse<List<Product>> response = CommonResponse.<List<Product>>builder()
