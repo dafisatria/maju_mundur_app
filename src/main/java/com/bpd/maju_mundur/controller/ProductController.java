@@ -20,7 +20,6 @@ public class ProductController {
     public ResponseEntity<CommonResponse<Product>> create(@RequestBody Product product) {
         Product createdProduct = productService.create(product);
         CommonResponse<Product> response = CommonResponse.<Product>builder()
-                .statusCode(HttpStatus.CREATED.value())
                 .message("Product created")
                 .data(createdProduct)
                 .build();
@@ -47,10 +46,10 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping
     public ResponseEntity<CommonResponse<List<Product>>> getAll() {
         List<Product> products = productService.getAll();
         CommonResponse<List<Product>> response = CommonResponse.<List<Product>>builder()
-                .statusCode(HttpStatus.CREATED.value())
                 .message("Product retrieved")
                 .data(products)
                 .build();
